@@ -8,6 +8,7 @@ import {
   } from "@chakra-ui/react"
 import { AddIcon } from "@chakra-ui/icons"
 import ListItem from "./ListItem"
+import { DragDropContext, Droppable,  DroppableProvided, DropResult } from "react-beautiful-dnd";
 
 interface Props {
     label: string;
@@ -41,6 +42,14 @@ const DynamicList = ({ label, defaultName = "Group", value = [] }: Props) => {
         console.log('go to id', id)
     }
 
+    const handleOnDragEnd = (result: DropResult) => {
+        if (!result.destination) return
+        const items = [...list]
+        const [reorderedItem] = items.splice(result.source.index, 1)
+        items.splice(result.destination.index, 0, reorderedItem)
+        setList(items)
+    }
+
     return (
     <Box>
         <Flex justifyContent="space-between" 
@@ -54,20 +63,32 @@ const DynamicList = ({ label, defaultName = "Group", value = [] }: Props) => {
                 icon={<AddIcon />} 
                 onClick={onAdd} />
         </Flex>
-        {console.log(list)}
-        <Stack as="ul" 
-            spacing="1.5"
-            border="1px dashed"
-            borderColor="gray.200"
-            padding="2"
-            minHeight="24">
-            {list.map(v => <ListItem 
-                            id={v.id}
-                            key={v.id} 
-                            onDelete={onDelete}
-                            onGoToGroup={onGoToGroup}
-                            label={v.label} />)}
-        </Stack>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="droppable">
+                {(provided: DroppableProvided) => ( 
+                    <Stack as="ul" 
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        spacing="1.5"
+                        border="1px dashed"
+                        borderColor="gray.200"
+                        padding="2"
+                        minHeight="24">
+                        {list.map((v, i) => ( 
+                            <ListItem
+                                key={v.id}
+                                id={v.id}
+                                index={i}
+                                onDelete={onDelete}
+                                onGoToGroup={onGoToGroup}
+                                label={v.label} />
+                        ))}
+                        {provided.placeholder}
+                    </Stack>
+                )}
+            </Droppable>
+        </DragDropContext>
+
     </Box>)
 }
 
