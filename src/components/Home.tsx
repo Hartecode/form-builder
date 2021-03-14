@@ -7,6 +7,14 @@ import {
   FormLabel,
   Textarea
 } from "@chakra-ui/react"
+import DynamicList from './DynamicList'
+
+const groupItems = [
+    {
+        id: "2",
+        label: "Contact Information"
+    }
+]
 
 const Home = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +39,10 @@ const Home = () => {
                 placeholder="Details about the form"
             />
         </FormControl>
+        <DynamicList 
+            label="Groups"
+            value={groupItems}
+            defaultName="Group" />
     </Stack>
   </Stack>)
 }
