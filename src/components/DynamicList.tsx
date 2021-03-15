@@ -9,6 +9,7 @@ import {
 import { AddIcon } from "@chakra-ui/icons"
 import ListItem from "./ListItem"
 import { DragDropContext, Droppable,  DroppableProvided, DropResult } from "react-beautiful-dnd";
+import { uuID } from '../scripts/helpers'
 
 interface Props {
     label: string;
@@ -20,8 +21,6 @@ interface GroupItem {
     id: string;
     label: string;
 }
-
-const uuID = () => Math.random().toString(36).substr(2, 9);
 
 const DynamicList = ({ label, defaultName = "Group", value = [] }: Props) => {
     const [list, setList] = useState(value)
