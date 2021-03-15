@@ -1,26 +1,31 @@
 import { Store, GroupDataObj, GroupData, Group, Field, FieldDataObj } from '../interface/store'
 import { FormGroup } from './formGroup'
+import { FieldNode } from './fieldNode'
 
 interface Constructable<T> {
   new(...args: any) : T;
 }
 
 export interface FormGroupInput extends GroupData {
-  parent: Root | FormGroup
+  parent: Root | FormGroup | FieldNode | null
 }
 
 export interface FormFieldInput extends Field {
-  parent: Root | FormGroup | null
+  parent: Root | FormGroup | FieldNode | null
 }
 
 export interface GroupNodeObj {
   [key: string]: FormGroup;
 }
 
+export interface FieldNodeObj {
+  [key: string]: FieldNode;
+}
+
 export function convertToNodeObj(
   obj: GroupDataObj | FieldDataObj,
-  nodeClass: Constructable<FormGroup>,
-  parent: Root | FormGroup): GroupNodeObj {
+  nodeClass: Constructable<FormGroup| FieldNode>,
+  parent: Root | FormGroup | FieldNode): GroupNodeObj | FieldNodeObj {
   let data = {};
 
   for (const key in obj) {
@@ -44,15 +49,26 @@ export function removeNode(
     return [filteredGroup, cleanData];
 }
 
-function createGroup( parent: Root | FormGroup, obj?: GroupData ) {
+export function createGroup( parent: Root | FormGroup | FieldNode, obj?: GroupData ) {
     const node = new FormGroup({...obj, parent})
     
     const group: Group = {
       key: node.gID,
-      label: node.gLabel || 'Group'
+      label: node.label || 'Group'
     }
     
     return [group, node];
+}
+
+export function createField( parent: Root | FormGroup | FieldNode, obj?: Field ) {
+  const node = new FieldNode({...obj, parent})
+  
+  const group: Group = {
+    key: node.id,
+    label: node.title || 'Group'
+  }
+  
+  return [group, node];
 }
 
 export class Root {
@@ -69,7 +85,7 @@ export class Root {
     this.title = title;
     this.description = description;
     this.group = group;
-    this.groupData = convertToNodeObj(groupData, FormGroup, this);
+    this.groupData = convertToNodeObj(groupData, FormGroup, this) as GroupNodeObj;
   }
 
   get titleVal(): string {
@@ -107,5 +123,6 @@ export class Root {
     this.group = filteredGroup as Group[];
     this.groupData = cleanData as GroupNodeObj;
   }
+
 }
 

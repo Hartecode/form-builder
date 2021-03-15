@@ -4,9 +4,12 @@ export interface Option {
   selected: boolean;
 }
 
+export type FieldType = 'checkbox' | 'text' | 'textarea' | 'tel' | 'email' | 'select' | '';
+
 export interface Field {
+  id: string;
   title: string;
-  type: 'checkbox' | 'text' | 'textarea' | 'tel' | 'email' | 'select';
+  type: FieldType;
   required: boolean;
   placeholder?: string;
   checked?: boolean;
