@@ -4,6 +4,7 @@ import './App.css';
 import { ChakraProvider } from "@chakra-ui/react"
 import { Container, Button } from "@chakra-ui/react"
 import Home from './components/Home'
+import StoreWrapper from './components/StoreWrapper'
 
 
 function App() {
@@ -12,7 +13,9 @@ function App() {
         <Container className="" maxW="xl" >
             <header className="">
             </header>
-            <Home />
+            <StoreWrapper>
+              <Home />
+            </StoreWrapper>
             <footer>
                 <Button colorScheme="teal" w="100%">Save</Button>
             </footer>

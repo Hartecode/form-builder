@@ -1,4 +1,4 @@
-import { Store, GroupDataObj, GroupData, Group, Field, FieldDataObj } from '../interface/store'
+import { GroupDataObj, GroupData, Group, Field, FieldDataObj } from '../interface/store'
 import { FormGroup } from './formGroup'
 import { FieldNode } from './fieldNode'
 
@@ -6,7 +6,7 @@ interface Constructable<T> {
   new(...args: any) : T;
 }
 
-export interface FormGroupInput extends GroupData {
+export interface FormGroupInput extends Partial<GroupData> {
   parent: Root | FormGroup | FieldNode | null
 }
 
@@ -54,7 +54,7 @@ export function createGroup( parent: Root | FormGroup | FieldNode, obj?: GroupDa
     
     const group: Group = {
       key: node.gID,
-      label: node.label || 'Group'
+      label: node.label ||  `Group ${node.gID}`
     }
     
     return [group, node];
@@ -76,6 +76,7 @@ export class Root {
   private description: string;
   private group: Group[];
   private groupData: GroupNodeObj;
+  private _position: 'root'
 
   constructor(
     title: string = '', 
@@ -100,6 +101,10 @@ export class Root {
     return this.group;
   }
 
+  get position() {
+    return this._position;
+  }
+
   set titleVal(str: string) {
     this.title = str;
   }
@@ -114,14 +119,29 @@ export class Root {
 
   createNewGroup() {
     const [ indObj, groupNode ] = createGroup(this);
-    this.group.push(indObj as Group);
+    this.group = [...this.group, indObj as Group];
     this.groupData[(groupNode as FormGroup).gID] = groupNode as FormGroup;
+    return [this.group, this.groupData];
   }
 
   removeGroup(id: string) {
     const [filteredGroup, cleanData] = removeNode(id, this.group, this.groupData);
     this.group = filteredGroup as Group[];
     this.groupData = cleanData as GroupNodeObj;
+    return [this.group, this.groupData];
+  }
+
+  updateGroupOrder(list: Group[]) {
+    this.group = list;
+    list.forEach(item => {
+      if (!(item.key in this.groupData)) {
+        this.groupData[item.key] = new FormGroup({ 
+          id: item.key,
+          label:  `Group ${item.key}`,
+          parent: this })
+      }
+    })
+    return [this.group, this.groupData];
   }
 
 }

@@ -9,45 +9,42 @@ import {
 import { AddIcon } from "@chakra-ui/icons"
 import ListItem from "./ListItem"
 import { DragDropContext, Droppable,  DroppableProvided, DropResult } from "react-beautiful-dnd";
-import { uuID } from '../scripts/helpers'
+// import { uuID } from '../scripts/helpers'
 
 interface Props {
     label: string;
-    defaultName?: string;
-    value: GroupItem[]
+    value: GroupItem[];
+    onDelete: (id: string) => void;
+    onAdd: () => void;
+    handleOnDragEnd: (result: DropResult) => void;
 }
 
 interface GroupItem {
-    id: string;
+    key: string;
     label: string;
 }
 
-const DynamicList = ({ label, defaultName = "Group", value = [] }: Props) => {
-    const [list, setList] = useState(value)
+const DynamicList = ({ 
+    label,
+    value = [],
+    onDelete,
+    onAdd,
+    handleOnDragEnd
+}: Props) => {
+    // const [list, setList] = useState(value)
 
-    const onAdd = () => {
-        const item: GroupItem = {
-            id: `${defaultName}-${uuID()}`,
-            label: defaultName
-        }
-        setList(prevItems => [...prevItems, item])
-    }
-
-    const onDelete = (id: string) => {
-        setList(prvItems => prvItems.filter(v => v.id !== id))
-    }
+    // const onAdd = () => {
+    //     const item: GroupItem = {
+    //         id: `${defaultName}-${uuID()}`,
+    //         label: defaultName
+    //     }
+    //     setList(prevItems => [...prevItems, item])
+    // }
 
     const onGoToGroup = (id: string) => {
         console.log('go to id', id)
     }
-
-    const handleOnDragEnd = (result: DropResult) => {
-        if (!result.destination) return
-        const items = [...list]
-        const [reorderedItem] = items.splice(result.source.index, 1)
-        items.splice(result.destination.index, 0, reorderedItem)
-        setList(items)
-    }
+    {console.log('here',value)}
 
     return (
     <Box>
@@ -73,10 +70,11 @@ const DynamicList = ({ label, defaultName = "Group", value = [] }: Props) => {
                         borderColor="gray.200"
                         padding="2"
                         minHeight="24">
-                        {list.map((v, i) => ( 
+                           
+                        {value.map((v, i) => ( 
                             <ListItem
-                                key={v.id}
-                                id={v.id}
+                                key={v.key}
+                                id={v.key}
                                 index={i}
                                 onDelete={onDelete}
                                 onGoToGroup={onGoToGroup}

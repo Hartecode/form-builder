@@ -17,7 +17,8 @@ export class FieldNode {
   private _subGroupsData: GroupNodeObj;
   private _subFields: Group[];
   private _subFieldsData: FieldNodeObj;
-  private _parent: Root | FormGroup | FieldNode | null
+  private _parent: Root | FormGroup | FieldNode | null;
+  private _position: 'field' =  'field';
 
   constructor(prop: FormFieldInput) {
     this._id = prop.id || '';
@@ -59,6 +60,10 @@ export class FieldNode {
 
   get parent() {
     return this._parent;
+  }
+
+  get position(): 'field' {
+    return this._position;
   }
 
   getSubGroupData(id: string) {
