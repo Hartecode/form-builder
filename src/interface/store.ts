@@ -14,8 +14,8 @@ export interface Field {
   placeholder?: string;
   checked?: boolean;
   pattern?: string;
-  minLength?: number;
-  maxLength?: number;
+  minLength?: string;
+  maxLength?: string;
   options?: Option[];
   subGroups: Group[];
   subGroupsData: GroupDataObj;

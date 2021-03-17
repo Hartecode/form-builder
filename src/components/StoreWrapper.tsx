@@ -6,7 +6,8 @@ import { FormGroup } from '../scripts/formGroup'
 import { Box, Link } from "@chakra-ui/react"
 import { ChevronLeftIcon } from "@chakra-ui/icons"
 import { FieldNode } from '../scripts/fieldNode';
-import { AnimatePresence, motion, MotionStyle } from "framer-motion";
+import { AnimatePresence, motion, MotionStyle } from "framer-motion"
+import FieldPage from './FieldPage'
 
 const pageVariants = {
   initial: {
@@ -91,6 +92,15 @@ const StoreWrapper = (props) => {
             <GroupPage
                 rootNode={rootNode} curNode={curNode as FormGroup} nextNode={nextNode} />
           </motion.div>}
+          {(page === 'field') && <motion.div key={curNode.id}
+              style={pageStyle}
+              initial="initial"
+              animate="in"
+              exit="out"
+              variants={pageVariants}
+              transition={pageTransition}>
+              <FieldPage rootNode={rootNode} curNode={curNode as FieldNode} nextNode={nextNode}/>
+            </motion.div>}
       </AnimatePresence>) 
       : <h1>Loading...</h1>
     }

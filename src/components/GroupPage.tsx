@@ -14,7 +14,7 @@ import { Group } from '../interface/store'
 import { FieldNode } from '../scripts/fieldNode';
 
 interface Props {
-  rootNode: FormGroup;
+  rootNode: Root;
   curNode: FormGroup;
   nextNode: (node: Root | FormGroup | FieldNode) => void;
 };

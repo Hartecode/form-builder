@@ -10,8 +10,8 @@ export class FieldNode {
   placeholder: string;
   checked: boolean;
   pattern: string;
-  minLength: number;
-  maxLength: number;
+  minLength: string;
+  maxLength: string;
   options: Option[];
   private _id: string;
   private _subGroups: Group[];
@@ -75,24 +75,28 @@ export class FieldNode {
     const [ indObj, groupNode ] = createGroup(this);
     this._subGroups = [...this._subGroups, indObj as Group];
     this._subGroupsData[(groupNode as FormGroup).id] = groupNode as FormGroup;
+    return [this._subGroups, this._subGroupsData];
   }
 
   removeSubGroup(id: string) {
     const [filteredGroup, cleanData] = removeNode(id, this.subGroups, this.subGroupsData);
     this._subGroups = filteredGroup as Group[];
     this._subGroupsData = cleanData as GroupNodeObj;
+    return [this._subGroups, this._subGroupsData];
   }
 
   creatNewSubField() {
     const [ indObj, fieldNode ] = createField(this);
     this._subFields = [...this._subFields, indObj as Group];
     this._subFieldsData[(fieldNode as FieldNode).id] = fieldNode as FieldNode;
+    return [this._subFields, this._subFieldsData];
   }
 
   removeSubField(id: string) {
     const [filteredGroup, cleanData] = removeNode(id, this._subFields, this._subFieldsData);
     this._subFields = filteredGroup as Group[];
     this._subFieldsData = cleanData as FieldNodeObj;
+    return [this._subFields, this._subFieldsData];
   }
 
 }
