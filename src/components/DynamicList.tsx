@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { 
     Text,
     Box,
@@ -14,6 +14,7 @@ import {
 import { ChevronDownIcon, AddIcon } from "@chakra-ui/icons"
 import ListItem from "./ListItem"
 import { DragDropContext, Droppable,  DroppableProvided, DropResult } from "react-beautiful-dnd";
+import { uuID } from '../scripts/helpers';
 
 interface Props {
     label: string;
@@ -22,6 +23,7 @@ interface Props {
     onAdd: (id?: string) => void;
     handleOnDragEnd: (result: DropResult) => void;
     components?: ComponentOption[];
+    onGoToGroup: (id: string) => void;
 }
 
 export interface ComponentOption {
@@ -40,12 +42,9 @@ const DynamicList = ({
     onDelete,
     onAdd,
     handleOnDragEnd,
-    components
+    components,
+    onGoToGroup
 }: Props) => {
-
-    const onGoToGroup = (id: string) => {
-        console.log('go to id', id)
-    }
 
     return (
     <Box>
@@ -78,9 +77,9 @@ const DynamicList = ({
             }
         </Flex>
         <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="droppable">
+            <Droppable droppableId={`droppable-${uuID()}`}>
                 {(provided: DroppableProvided) => ( 
-                    <Stack as="ul" 
+                    <Stack as="ol" 
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         spacing="1.5"
