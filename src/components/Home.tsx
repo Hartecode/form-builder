@@ -32,6 +32,7 @@ const Home = (props: Props) => {
       console.log('once',{ props })
       setTitleVal(props.curNode.titleVal)
       setDescVal(props.curNode.descriptionVal)
+      setGroupList(props.curNode.groupList)
     }
   }, [props, titleVal, descVal])
 
