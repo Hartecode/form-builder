@@ -6,6 +6,30 @@ import { FormGroup } from '../scripts/formGroup'
 import { Box, Link } from "@chakra-ui/react"
 import { ChevronLeftIcon } from "@chakra-ui/icons"
 import { FieldNode } from '../scripts/fieldNode';
+import { AnimatePresence, motion, MotionStyle } from "framer-motion";
+
+const pageVariants = {
+  initial: {
+    opacity: 0,
+  },
+  in: {
+    opacity: 1,
+  },
+  out: {
+    opacity: 0,
+  },
+}
+
+const pageTransition = {
+  type: "tween",
+  ease: "anticipate",
+  duration: 0.5
+};
+
+const pageStyle: MotionStyle = {
+  position: "absolute",
+  width: "100%"
+};
 
 
 export interface Props {
@@ -18,6 +42,7 @@ const StoreWrapper = (props) => {
   const [page, setPage] = useState('root')
   const [rootNode, setRootNode] = useState(null)
   const [curNode, setCurNode] = useState<Root | FormGroup | FieldNode>(null)
+
   useEffect(() => {
     const node = new Root()
     if (!rootNode) {
@@ -45,10 +70,30 @@ const StoreWrapper = (props) => {
         </Link>)}
     </Box>
     {console.log({rootNode, curNode, page})}
-    {(page === 'root') && <Home 
-            rootNode={rootNode} curNode={curNode as Root} nextNode={nextNode} />}
-    {(page === 'group') && <GroupPage
-            rootNode={rootNode} curNode={curNode as FormGroup} nextNode={nextNode} />}
+    { curNode ? (
+      <AnimatePresence>
+        {(page === 'root') && (<motion.div key={curNode.id}
+            style={pageStyle}
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={pageVariants}
+            transition={pageTransition}>
+            <Home rootNode={rootNode} curNode={curNode as Root} nextNode={nextNode} />
+          </motion.div>)}
+        {(page === 'group') && <motion.div key={curNode.id}
+            style={pageStyle}
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={pageVariants}
+            transition={pageTransition}>
+            <GroupPage
+                rootNode={rootNode} curNode={curNode as FormGroup} nextNode={nextNode} />
+          </motion.div>}
+      </AnimatePresence>) 
+      : <h1>Loading...</h1>
+    }
     
   </>)
 }

@@ -9,11 +9,8 @@ import StoreWrapper from './components/StoreWrapper'
 function App() {
   return (
     <ChakraProvider resetCSS={true}>
-        <Container className="" maxW="xl" >
+        <Container className="" maxW="xl" position="relative">
             <StoreWrapper />
-            <footer>
-                <Button colorScheme="teal" w="100%">Save</Button>
-            </footer>
         </Container>
     </ChakraProvider>
   );
