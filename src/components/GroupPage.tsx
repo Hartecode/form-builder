@@ -11,11 +11,12 @@ import { DropResult } from "react-beautiful-dnd";
 import { FormGroup } from '../scripts/formGroup'
 import { Root } from '../scripts/store'
 import { Group } from '../interface/store'
+import { FieldNode } from '../scripts/fieldNode';
 
 interface Props {
   rootNode: FormGroup;
   curNode: FormGroup;
-  nextNode: (node: Root | FormGroup) => void;
+  nextNode: (node: Root | FormGroup | FieldNode) => void;
 };
 
 type ListType = 'field' | 'subG' | 'subF';
@@ -119,6 +120,24 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
     }
   }
 
+  const onGoToSubGroup = (id: string) => {
+    const node: FormGroup = curNode.getSubGroupData(id)
+    console.log(node)
+    nextNode(node);
+  }
+
+  const onGoToField = (id: string) => {
+    console.log('got  to ', id)
+    const node: FieldNode = curNode.getFieldData(id)
+    nextNode(node);
+  }
+
+  const onGoToSubField = (id: string) => {
+    console.log('got  to ', id)
+    const node: FieldNode = curNode.getSubFieldData(id)
+    nextNode(node);
+  }
+
   return (
   <Stack as="main" spacing={6}>
     <Heading as="h1">
@@ -139,14 +158,14 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
             components={fieldComponents}
             onDelete={(id: string) => onDelete(id, 'field')}
             onAdd={(id) => onAdd('field', id)}
-            onGoToGroup={(id) => console.log('field', id)}
+            onGoToGroup={onGoToField}
             handleOnDragEnd={(v: DropResult) => handleOnDragEnd(v, 'field', fieldList)} />
         <DynamicList 
             label="Sub Groups"
             value={subGroup}
             onDelete={(id: string) => onDelete(id, 'subG')}
             onAdd={() => onAdd('subG')}
-            onGoToGroup={(id) => console.log('sub group', id)}
+            onGoToGroup={onGoToSubGroup}
             handleOnDragEnd={(v: DropResult) => handleOnDragEnd(v, 'subG', subGroup)} />
         <DynamicList 
             label="Sub Fields"
@@ -154,7 +173,7 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
             components={fieldComponents}
             onDelete={(id: string) => onDelete(id, 'subF')}
             onAdd={(id) => onAdd('subF', id)}
-            onGoToGroup={(id) => console.log('sub field', id)}
+            onGoToGroup={onGoToSubField}
             handleOnDragEnd={(v: DropResult) => handleOnDragEnd(v, 'subF', subField)} />
     </Stack>
   </Stack>)
