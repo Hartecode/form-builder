@@ -4,19 +4,29 @@ import {
     Box,
     Stack,
     Flex,
-    IconButton
+    IconButton,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    Button
   } from "@chakra-ui/react"
-import { AddIcon } from "@chakra-ui/icons"
+import { ChevronDownIcon, AddIcon } from "@chakra-ui/icons"
 import ListItem from "./ListItem"
 import { DragDropContext, Droppable,  DroppableProvided, DropResult } from "react-beautiful-dnd";
-// import { uuID } from '../scripts/helpers'
 
 interface Props {
     label: string;
     value: GroupItem[];
     onDelete: (id: string) => void;
-    onAdd: () => void;
+    onAdd: (id?: string) => void;
     handleOnDragEnd: (result: DropResult) => void;
+    components?: ComponentOption[];
+}
+
+export interface ComponentOption {
+    val: string;
+    content: string;
 }
 
 interface GroupItem {
@@ -29,22 +39,13 @@ const DynamicList = ({
     value = [],
     onDelete,
     onAdd,
-    handleOnDragEnd
+    handleOnDragEnd,
+    components
 }: Props) => {
-    // const [list, setList] = useState(value)
-
-    // const onAdd = () => {
-    //     const item: GroupItem = {
-    //         id: `${defaultName}-${uuID()}`,
-    //         label: defaultName
-    //     }
-    //     setList(prevItems => [...prevItems, item])
-    // }
 
     const onGoToGroup = (id: string) => {
         console.log('go to id', id)
     }
-    {console.log('here',value)}
 
     return (
     <Box>
@@ -52,12 +53,29 @@ const DynamicList = ({
             alignItems="center" 
             mb={2}>
             <Text fontWeight="semibold">{label}</Text>
-            <IconButton aria-label="Add Group" 
-                isRound={true} 
-                colorScheme="teal"
-                size="sm"
-                icon={<AddIcon />} 
-                onClick={onAdd} />
+            {components ? 
+                <Menu>
+                    <MenuButton as={Button} colorScheme="teal" rightIcon={<ChevronDownIcon />}>
+                        Component
+                    </MenuButton>
+                    <MenuList>
+                        {components.map((v, i)=> (
+                            <MenuItem
+                                key={`${v}${i}`}
+                                onClick={() => onAdd(v.val)}
+                                icon={<AddIcon />}
+                                >
+                                {v.content}
+                            </MenuItem>))}
+                    </MenuList>
+                </Menu> :
+                <IconButton aria-label="Add Group" 
+                    isRound={true} 
+                    colorScheme="teal"
+                    size="sm"
+                    icon={<AddIcon />} 
+                    onClick={() => onAdd()} />
+            }
         </Flex>
         <DragDropContext onDragEnd={handleOnDragEnd}>
             <Droppable droppableId="droppable">
@@ -69,8 +87,7 @@ const DynamicList = ({
                         border="1px dashed"
                         borderColor="gray.200"
                         padding="2"
-                        minHeight="24">
-                           
+                        minHeight="24">             
                         {value.map((v, i) => ( 
                             <ListItem
                                 key={v.key}

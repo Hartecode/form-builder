@@ -10,7 +10,7 @@ export interface FormGroupInput extends Partial<GroupData> {
   parent: Root | FormGroup | FieldNode | null
 }
 
-export interface FormFieldInput extends Field {
+export interface FormFieldInput extends Partial<Field> {
   parent: Root | FormGroup | FieldNode | null
 }
 

@@ -1,33 +1,39 @@
-import React, { Children, isValidElement, cloneElement, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Root } from '../scripts/store'
+import Home from './Home'
+import GroupPage from './GroupPage'
 
 
-interface Props {
+export interface Props {
   rootNode: Root;
   curNode: Root;
-  setCurNode: (node: Root) => void;
+  nextNode: (node: Root) => void;
 };
 
-const StoreWrapper = ({ children }) => {
+const StoreWrapper = (props) => {
+  const [page, setPage] = useState('group')
   const [rootNode, setRootNode] = useState(null)
   const [curNode, setCurNode] = useState(null)
   useEffect(() => {
-    const node = new Root();
-    setRootNode(node);
-    setCurNode(node);
-  }, []);
-  return (<>
-    {Children.map(children,
-      (child: React.ReactElement<Props>, i: number) => {
-        if (isValidElement(child)) {
-          const props = {
-            rootNode,
-            curNode,
-            setCurNode
-          };
-          return cloneElement(child, props);
-        };
-      })}
+    const node = new Root()
+    if (!rootNode) {
+      setRootNode(node)
+      setCurNode(node)
+    }
+  }, [rootNode])
+
+  const nextNode = (node: Root) => {
+    setCurNode(node)
+    setPage(node.position)
+  }
+
+  return (
+  <>
+    {(page === 'root') && <Home 
+            rootNode={rootNode} curNode={curNode} nextNode={nextNode} />}
+    {(page === 'group') && <GroupPage
+            rootNode={rootNode} curNode={curNode} nextNode={nextNode} />}
+    
   </>)
 }
 

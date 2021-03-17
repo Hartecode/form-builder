@@ -62,38 +62,83 @@ export class FormGroup {
 
   createNewSubGroup() {
     const [ indObj, groupNode ] = createGroup(this);
-    this.subGroups.push(indObj as Group);
+    this.subGroups = [...this.subGroups, indObj as Group];
     this.subGroupsData[(groupNode as FormGroup).gID] = groupNode as FormGroup;
+    return [this.subGroups, this.subGroupsData];
   }
 
   removeSubGroup(id: string) {
     const [filteredGroup, cleanData] = removeNode(id, this.subGroups, this.subGroupsData);
     this.subGroups = filteredGroup as Group[];
     this.subGroupsData = cleanData as GroupNodeObj;
+    return [this.subGroups, this.subGroupsData]
   }
 
   creatNewField() {
     const [ indObj, fieldNode ] = createField(this);
-    this.fields.push(indObj as Group);
+    this.fields = [...this.fields, indObj as Group];
     this.fieldsData[(fieldNode as FieldNode).id] = fieldNode as FieldNode;
+    return [this.fields, this.fieldsData];
   }
 
   removeField(id: string) {
     const [filteredGroup, cleanData] = removeNode(id, this.fields, this.fieldsData);
     this.fields = filteredGroup as Group[];
     this.fieldsData = cleanData as FieldNodeObj;
+    return [this.fields, this.fieldsData];
   }
 
   creatNewSubField() {
     const [ indObj, fieldNode ] = createField(this);
-    this.subFields.push(indObj as Group);
+    this.subFields = [ ...this.subFields, indObj as Group];
     this.subFieldsData[(fieldNode as FieldNode).id] = fieldNode as FieldNode;
+    return [this.subFields, this.subFieldsData]
   }
 
   removeSubField(id: string) {
     const [filteredGroup, cleanData] = removeNode(id, this.subFields, this.subFieldsData);
     this.subFields = filteredGroup as Group[];
     this.subFieldsData = cleanData as FieldNodeObj;
+    return [this.subFields, this.subFieldsData]
+  }
+
+  updateSubGroupOrder(list: Group[]) {
+    this.subGroups = list;
+    list.forEach(item => {
+      if (!(item.key in this.subGroupsData)) {
+        this.subGroupsData[item.key] = new FormGroup({ 
+          id: item.key,
+          label:  `Group ${item.key}`,
+          parent: this })
+      }
+    })
+    return [this.subGroups, this.subGroupsData];
+  }
+
+  updateSubFieldOrder(list: Group[]) {
+    this.subFields = list;
+    list.forEach(item => {
+      if (!(item.key in this.subFieldsData)) {
+        this.subFieldsData[item.key] = new FieldNode({ 
+          id: item.key,
+          title:  `Field ${item.key}`,
+          parent: this })
+      }
+    })
+    return [this.subFields, this.subFieldsData];
+  }
+
+  updateFieldOrder(list: Group[]) {
+    this.fields = list;
+    list.forEach(item => {
+      if (!(item.key in this.fieldsData)) {
+        this.fieldsData[item.key] = new FieldNode({ 
+          id: item.key,
+          title:  `Field ${item.key}`,
+          parent: this })
+      }
+    })
+    return [this.fields, this.fieldsData];
   }
 
 }

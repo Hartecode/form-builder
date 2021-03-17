@@ -10,14 +10,15 @@ import {
 import DynamicList from './DynamicList'
 import { Root } from '../scripts/store'
 import { DropResult } from "react-beautiful-dnd";
+import { Group } from '../interface/store'
 
 interface Props {
   rootNode: Root;
   curNode: Root;
-  setCurNode: (node: Root) => void;
+  nextNode: (node: Root) => void;
 };
 
-const Home = (props) => {
+const Home = (props: Props) => {
   const [ titleVal, setTitleVal ] = useState(null)
   const [ descVal,  setDescVal ] = useState(null)
   const [ groupList, setGroupList ] = useState([])
@@ -47,13 +48,6 @@ const Home = (props) => {
     }
   }, [descVal, props.curNode])
 
-  useEffect(() => {
-    if (props.curNode && descVal !== null ) {
-      props.curNode.descriptionVal = descVal
-      console.log('desc:', descVal, props.curNode )
-    }
-  }, [descVal, props.curNode])
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const target = e.target;
     if(target.name === 'title') {
@@ -68,14 +62,12 @@ const Home = (props) => {
   const onDelete = (id: string) => {
     console.log('on del')
     const [ group ] = props.curNode.removeGroup(id);
-    setGroupList(group)
+    setGroupList(group as Group[])
   }
 
   const onAdd = () => {
-    console.log('run add')
     const [ group ] = props.curNode.createNewGroup();
-    console.log(group)
-    setGroupList(group)
+    setGroupList(group as Group[])
   }
 
   const handleOnDragEnd = (result: DropResult) => {
@@ -85,7 +77,7 @@ const Home = (props) => {
         items.splice(result.destination.index, 0, reorderedItem)
         const [newGroup] = props.curNode.updateGroupOrder(items)
         console.log(props.curNode)
-        setGroupList(newGroup)
+        setGroupList(newGroup as Group[])
     }
 
   return (
