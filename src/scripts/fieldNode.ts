@@ -73,8 +73,8 @@ export class FieldNode {
 
   createNewSubGroup() {
     const [ indObj, groupNode ] = createGroup(this);
-    this._subGroups.push(indObj as Group);
-    this._subGroupsData[(groupNode as FormGroup).gID] = groupNode as FormGroup;
+    this._subGroups = [...this._subGroups, indObj as Group];
+    this._subGroupsData[(groupNode as FormGroup).id] = groupNode as FormGroup;
   }
 
   removeSubGroup(id: string) {
@@ -85,7 +85,7 @@ export class FieldNode {
 
   creatNewSubField() {
     const [ indObj, fieldNode ] = createField(this);
-    this._subFields.push(indObj as Group);
+    this._subFields = [...this._subFields, indObj as Group];
     this._subFieldsData[(fieldNode as FieldNode).id] = fieldNode as FieldNode;
   }
 

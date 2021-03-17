@@ -53,7 +53,7 @@ export function createGroup( parent: Root | FormGroup | FieldNode, obj?: GroupDa
     const node = new FormGroup({...obj, parent})
     
     const group: Group = {
-      key: node.gID,
+      key: node.id,
       label: node.label
     }
     
@@ -72,6 +72,7 @@ export function createField( parent: Root | FormGroup | FieldNode, obj?: Field )
 }
 
 export class Root {
+  id: string = 'onlyRoot'
   private title: string;
   private description: string;
   private group: Group[];
@@ -120,7 +121,7 @@ export class Root {
   createNewGroup() {
     const [ indObj, groupNode ] = createGroup(this);
     this.group = [...this.group, indObj as Group];
-    this.groupData[(groupNode as FormGroup).gID] = groupNode as FormGroup;
+    this.groupData[(groupNode as FormGroup).id] = groupNode as FormGroup;
     return [this.group, this.groupData];
   }
 

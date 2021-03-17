@@ -9,7 +9,7 @@ import { FieldNode } from './fieldNode'
 import { uuID } from './helpers'
 
 export class FormGroup {
-  private id: string;
+  private _id: string;
   label: string;
   private fields: Group[];
   private fieldsData: FieldNodeObj;
@@ -21,8 +21,8 @@ export class FormGroup {
   private _position: 'group' = 'group';
 
   constructor(input: FormGroupInput) {
-    this.id = input.id || uuID();
-    this.label = input.label || `Group ${this.gID}`;
+    this._id = input.id || uuID();
+    this.label = input.label || `Group ${this._id}`;
     this.fields = input.fields || [];
     this.fieldsData = convertToNodeObj(input.fieldsData, FieldNode, this) as FieldNodeObj;
     this.subGroups = input.subGroups || [];
@@ -32,8 +32,8 @@ export class FormGroup {
     this._parent = input.parent || null;
   }
 
-  get gID(): string {
-    return this.id;
+  get id(): string {
+    return this._id;
   }
 
   get gFields(): Group[] {
@@ -60,10 +60,18 @@ export class FormGroup {
     return this.subGroupsData[id] || null;
   }
 
+  getFieldData(id: string) {
+    return this.fieldsData[id] || null;
+  }
+
+  getSubFieldData(id: string) {
+    return this.subFieldsData[id] || null;
+  }
+
   createNewSubGroup() {
     const [ indObj, groupNode ] = createGroup(this);
     this.subGroups = [...this.subGroups, indObj as Group];
-    this.subGroupsData[(groupNode as FormGroup).gID] = groupNode as FormGroup;
+    this.subGroupsData[(groupNode as FormGroup).id] = groupNode as FormGroup;
     return [this.subGroups, this.subGroupsData];
   }
 
