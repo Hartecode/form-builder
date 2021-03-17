@@ -54,7 +54,7 @@ export function createGroup( parent: Root | FormGroup | FieldNode, obj?: GroupDa
     
     const group: Group = {
       key: node.gID,
-      label: node.label ||  `Group ${node.gID}`
+      label: node.label
     }
     
     return [group, node];
@@ -65,7 +65,7 @@ export function createField( parent: Root | FormGroup | FieldNode, obj?: Field )
   
   const group: Group = {
     key: node.id,
-    label: node.title || 'Group'
+    label: node.title
   }
   
   return [group, node];
@@ -76,7 +76,7 @@ export class Root {
   private description: string;
   private group: Group[];
   private groupData: GroupNodeObj;
-  private _position: 'root'
+  private _position: 'root' = 'root';
 
   constructor(
     title: string = '', 

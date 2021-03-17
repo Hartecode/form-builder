@@ -94,6 +94,7 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
         setSubField(subFieldArr as Group[])
         break;
     }
+    console.log({ rootNode, curNode})
   }
 
   const handleOnDragEnd = (result: DropResult, type: ListType, curList: Group[]) => {
@@ -138,12 +139,14 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
             components={fieldComponents}
             onDelete={(id: string) => onDelete(id, 'field')}
             onAdd={(id) => onAdd('field', id)}
+            onGoToGroup={(id) => console.log('field', id)}
             handleOnDragEnd={(v: DropResult) => handleOnDragEnd(v, 'field', fieldList)} />
         <DynamicList 
             label="Sub Groups"
             value={subGroup}
             onDelete={(id: string) => onDelete(id, 'subG')}
             onAdd={() => onAdd('subG')}
+            onGoToGroup={(id) => console.log('sub group', id)}
             handleOnDragEnd={(v: DropResult) => handleOnDragEnd(v, 'subG', subGroup)} />
         <DynamicList 
             label="Sub Fields"
@@ -151,6 +154,7 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
             components={fieldComponents}
             onDelete={(id: string) => onDelete(id, 'subF')}
             onAdd={(id) => onAdd('subF', id)}
+            onGoToGroup={(id) => console.log('sub field', id)}
             handleOnDragEnd={(v: DropResult) => handleOnDragEnd(v, 'subF', subField)} />
     </Stack>
   </Stack>)

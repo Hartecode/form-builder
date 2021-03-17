@@ -10,8 +10,6 @@ function App() {
   return (
     <ChakraProvider resetCSS={true}>
         <Container className="" maxW="xl" >
-            <header className="">
-            </header>
             <StoreWrapper />
             <footer>
                 <Button colorScheme="teal" w="100%">Save</Button>

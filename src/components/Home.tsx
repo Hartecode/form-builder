@@ -11,11 +11,12 @@ import DynamicList from './DynamicList'
 import { Root } from '../scripts/store'
 import { DropResult } from "react-beautiful-dnd";
 import { Group } from '../interface/store'
+import { FormGroup } from '../scripts/formGroup';
 
 interface Props {
   rootNode: Root;
   curNode: Root;
-  nextNode: (node: Root) => void;
+  nextNode: (node: Root | FormGroup) => void;
 };
 
 const Home = (props: Props) => {
@@ -71,14 +72,20 @@ const Home = (props: Props) => {
   }
 
   const handleOnDragEnd = (result: DropResult) => {
-        if (!result.destination) return
-        const items = [...groupList]
-        const [reorderedItem] = items.splice(result.source.index, 1)
-        items.splice(result.destination.index, 0, reorderedItem)
-        const [newGroup] = props.curNode.updateGroupOrder(items)
-        console.log(props.curNode)
-        setGroupList(newGroup as Group[])
-    }
+    if (!result.destination) return
+    const items = [...groupList]
+    const [reorderedItem] = items.splice(result.source.index, 1)
+    items.splice(result.destination.index, 0, reorderedItem)
+    const [newGroup] = props.curNode.updateGroupOrder(items)
+    console.log(props.curNode)
+    setGroupList(newGroup as Group[])
+  }
+
+  const onGoToGroup = (id: string) => {
+    console.log('got  to ', id)
+    const node: FormGroup = props.curNode.getGroupData(id)
+    props.nextNode(node);
+  }
 
   return (
   <Stack as="main" spacing={6}>
@@ -107,6 +114,7 @@ const Home = (props: Props) => {
             value={groupList}
             onDelete={onDelete}
             onAdd={onAdd}
+            onGoToGroup={onGoToGroup}
             handleOnDragEnd={handleOnDragEnd} />
     </Stack>
   </Stack>)

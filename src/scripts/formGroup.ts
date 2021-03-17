@@ -17,19 +17,19 @@ export class FormGroup {
   private subGroupsData: GroupNodeObj;
   private subFields: Group[];
   private subFieldsData: FieldNodeObj;
-  private parent: Root | FormGroup | FieldNode | null;
+  private _parent: Root | FormGroup | FieldNode | null;
   private _position: 'group' = 'group';
 
   constructor(input: FormGroupInput) {
     this.id = input.id || uuID();
-    this.label = input.label || `Group`;
+    this.label = input.label || `Group ${this.gID}`;
     this.fields = input.fields || [];
     this.fieldsData = convertToNodeObj(input.fieldsData, FieldNode, this) as FieldNodeObj;
     this.subGroups = input.subGroups || [];
     this.subGroupsData = convertToNodeObj(input.subGroupsData, FormGroup, this) as GroupNodeObj;
     this.subFields = input.subFields || [];
     this.subFieldsData = convertToNodeObj(input.subFieldsData, FieldNode, this) as FieldNodeObj;
-    this.parent = input.parent || null;
+    this._parent = input.parent || null;
   }
 
   get gID(): string {
@@ -48,8 +48,8 @@ export class FormGroup {
     return this.subFields;
   }
 
-  get gParent(): Root | FormGroup | FieldNode | null {
-    return this.parent;
+  get parent(): Root | FormGroup | FieldNode | null {
+    return this._parent;
   }
 
   get position(): 'group' {

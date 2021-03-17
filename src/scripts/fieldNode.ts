@@ -1,6 +1,7 @@
-import { Store, GroupDataObj, Group, Field, FieldDataObj, Option, FieldType } from '../interface/store'
+import { Group, Option, FieldType } from '../interface/store'
 import { FormFieldInput, Root, createField, createGroup, GroupNodeObj, convertToNodeObj, FieldNodeObj, removeNode } from './store'
 import { FormGroup } from './formGroup'
+import { uuID } from './helpers'
 
 export class FieldNode {
   title: string;
@@ -21,8 +22,8 @@ export class FieldNode {
   private _position: 'field' =  'field';
 
   constructor(prop: FormFieldInput) {
-    this._id = prop.id || '';
-    this.title = prop.title || '';
+    this._id = prop.id || uuID();
+    this.title = prop.title || `Field ${this._id}`;
     this.type = prop.type || '';
     this.required = !!(prop.required);
     this.placeholder = prop.placeholder;
