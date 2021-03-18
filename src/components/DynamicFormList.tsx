@@ -62,8 +62,8 @@ const DynamicFormList = ({
                         minHeight="24">             
                         {value.map((v: Option, i) => ( 
                             <FormListItem
-                                key={v.value}
-                                id={v.value}
+                                key={v.id}
+                                id={v.id}
                                 index={i}
                                 optionData={v}
                                 onDelete={onDelete}

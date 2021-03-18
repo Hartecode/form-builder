@@ -46,7 +46,7 @@ const FormListItem = ({ id, index, label, handleSubmit, onDelete, optionData }: 
                     initialFocusRef={firstFieldRef}
                     onOpen={onOpen}
                     onClose={onClose}
-                    placement="right"
+                    placement="bottom"
                     closeOnBlur={false}>
                       <PopoverTrigger>
                         <Link flex="1"

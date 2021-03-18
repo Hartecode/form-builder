@@ -31,7 +31,7 @@ export class FieldNode {
     this.pattern = prop.pattern;
     this.minLength = prop.maxLength;
     this.maxLength = prop.maxLength;
-    this.options = prop.options;
+    this.options = prop.options || [];
     this._subGroups = prop.subGroups || [];
     this._subGroupsData = convertToNodeObj(prop.subGroupsData, FormGroup, this) as GroupNodeObj;
     this._subFields = prop.subFields || [];
@@ -97,6 +97,21 @@ export class FieldNode {
     this._subFields = filteredGroup as Group[];
     this._subFieldsData = cleanData as FieldNodeObj;
     return [this._subFields, this._subFieldsData];
+  }
+
+  addOption() {
+    this.options = [...this.options, {
+      id: uuID(),
+      value: '',
+      label: '',
+      selected: false
+    }];
+    return this.options;
+  }
+
+  removeOption(id: string) {
+    this.options = this.options.filter(v => v.id !== id);
+    return this.options;
   }
 
 }

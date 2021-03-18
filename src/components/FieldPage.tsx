@@ -20,6 +20,7 @@ import { Root } from '../scripts/store'
 import { Group, Option } from '../interface/store'
 import { FieldNode } from '../scripts/fieldNode'
 import { selectTypes } from '../data/selectTypes'
+import DynamicFormList from './DynamicFormList'
 
 interface Props {
   rootNode: Root;
@@ -114,13 +115,17 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
     console.log({ rootNode, curNode})
   }
 
-  const handleOnDragEnd = (result: DropResult, type: 'subG' | 'subF', curList: Group[]) => {
+  const handleOnDragEnd = (result: DropResult,
+    type: 'subG' | 'subF' | 'opt',
+    curList: Group[] | Option[]) => {
     if (!result.destination) return
     const items = [...curList]
     const [reorderedItem] = items.splice(result.source.index, 1)
     items.splice(result.destination.index, 0, reorderedItem)
 
     switch (type) {
+      case 'opt':
+        break;
       case 'subG':
         // const [group] = curNode.updateSubGroupOrder(items)
         // setSubGroup(group as Group[])
@@ -142,6 +147,20 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
     console.log('got  to ', id)
     // const node: FieldNode = curNode.getSubFieldData(id)
     // nextNode(node);
+  }
+
+  const onRemoveOption = (id: string) => {
+    const updatedOpt = curNode.removeOption(id);
+    setOptionsVal(updatedOpt);
+  }
+
+  const onAddOption = () => {
+    const updatedOpt = curNode.addOption();
+    setOptionsVal(updatedOpt);
+  }
+
+  const updateOption = (e) => {
+    console.log(e)
   }
 
   return (<>
@@ -229,6 +248,13 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
                   </NumberInput>
               </FormControl>
             </>}
+          {(typeVal === 'select') && <DynamicFormList 
+            label="Options List"
+            value={optionsVal}
+            onDelete={onRemoveOption}
+            onAdd={onAddOption}
+            handleOnDragEnd={(v: DropResult) => handleOnDragEnd(v, 'opt', optionsVal)}
+            handleSubmit={updateOption} />}
           <DynamicList 
             label="Sub Groups"
             value={subGroup}
