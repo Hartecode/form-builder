@@ -68,7 +68,11 @@ export class FieldNode {
   }
 
   getSubGroupData(id: string) {
-    return this.subGroupsData[id] || null;
+    return this._subGroupsData[id] || null;
+  }
+
+  getSubFieldData(id: string) {
+    return this._subFieldsData[id] || null;
   }
 
   createNewSubGroup() {
@@ -122,6 +126,32 @@ export class FieldNode {
       return v;
     })
     return this.options;
+  }
+
+  updateSubFieldOrder(list: Group[]) {
+    this._subFields = list;
+    list.forEach(item => {
+      if (!(item.key in this._subFieldsData)) {
+        this._subFieldsData[item.key] = new FieldNode({ 
+          id: item.key,
+          title:  `Field ${item.key}`,
+          parent: this })
+      }
+    })
+    return [this._subFields, this._subFieldsData];
+  }
+
+  updateSubGroupOrder(list: Group[]) {
+    this._subGroups = list;
+    list.forEach(item => {
+      if (!(item.key in this._subGroupsData)) {
+        this._subGroupsData[item.key] = new FormGroup({ 
+          id: item.key,
+          label:  `Group ${item.key}`,
+          parent: this })
+      }
+    })
+    return [this.subGroups, this._subGroupsData];
   }
 
 }

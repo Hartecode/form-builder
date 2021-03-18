@@ -6,7 +6,7 @@ interface SelectType {
 export const selectTypes: SelectType[] = [
   {
     label: 'Check Box',
-    value: 'checkBox'
+    value: 'checkbox'
   },
   {
     label: 'Text',

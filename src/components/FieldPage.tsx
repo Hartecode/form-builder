@@ -17,7 +17,7 @@ import DynamicList, { ComponentOption } from './DynamicList'
 import { DropResult } from "react-beautiful-dnd"
 import { FormGroup } from '../scripts/formGroup'
 import { Root } from '../scripts/store'
-import { Group, Option } from '../interface/store'
+import { FieldType, Group, Option } from '../interface/store'
 import { FieldNode } from '../scripts/fieldNode'
 import { selectTypes } from '../data/selectTypes'
 import DynamicFormList from './DynamicFormList'
@@ -45,7 +45,7 @@ const lengthReqTypes = ['tel', 'text', 'textarea', 'email']
 
 const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
   const [labelVal, setLabelVal] = useState(null)
-  const [typeVal, setTypeVal] = useState<string>('')
+  const [typeVal, setTypeVal] = useState<FieldType>('')
   const [requiredVal, setRequiredVal] = useState<boolean>(false)
   const [placeholderVal, setPlaceholderVal] = useState<string>('')
   const [checkedVal, setCheckVal] = useState<boolean>(false)
@@ -78,9 +78,13 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
   useEffect(() => {
     if (curNode && labelVal !== null ) {
       curNode.title = labelVal
-      console.log('Label:', labelVal, curNode )
     }
   }, [labelVal, curNode])
+
+  const onSetFieldType = (val: FieldType) => {
+    curNode.type = val;
+    setTypeVal(curNode.type);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLabelVal(e.target.value)
@@ -125,14 +129,16 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
 
     switch (type) {
       case 'opt':
+        curNode.options = items as Option[];
+        setOptionsVal(curNode.options)
         break;
       case 'subG':
-        // const [group] = curNode.updateSubGroupOrder(items)
-        // setSubGroup(group as Group[])
+        const [group] = curNode.updateSubGroupOrder(items as Group[])
+        setSubGroup(group as Group[])
         break;
       case 'subF':
-        // const [subFieldArr] = curNode.updateSubFieldOrder(items)
-        // setSubField(subFieldArr as Group[])
+        const [subFieldArr] = curNode.updateSubFieldOrder(items as Group[])
+        setSubField(subFieldArr as Group[])
         break;
     }
   }
@@ -145,8 +151,8 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
 
   const onGoToSubField = (id: string) => {
     console.log('got  to ', id)
-    // const node: FieldNode = curNode.getSubFieldData(id)
-    // nextNode(node);
+    const node: FieldNode = curNode.getSubFieldData(id)
+    nextNode(node);
   }
 
   const onRemoveOption = (id: string) => {
@@ -182,7 +188,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
             <FormLabel htmlFor="type">Type</FormLabel>
             <Select 
               name="type"
-              onChange={(e) => setTypeVal(e.target.value)}
+              onChange={(e) => onSetFieldType(e.target.value as FieldType)}
               value={typeVal}
               placeholder="Select option">
               {selectTypes.map(({value, label}) => (
@@ -207,7 +213,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
                   placeholder="Enter Placeholder"
               />
           </FormControl>}
-          {(typeVal === 'checkBox') && <Checkbox
+          {(typeVal === 'checkbox') && <Checkbox
               checked={checkedVal}
               onChange={(e) => setCheckVal(e.target.checked)}>
               Checked
