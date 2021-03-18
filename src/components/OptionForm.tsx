@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { 
   Stack,
   ButtonGroup,
@@ -12,11 +12,15 @@ import { Option } from '../interface/store'
 interface Props {
   firstFieldRef: React.Ref<HTMLInputElement>,
   onCancel: () => void;
-  handleSubmit: (e) => void;
+  handleSubmit: (e: Option) => void;
   optionData: Option;
 }
 
 const OptionForm = ({ firstFieldRef, onCancel, handleSubmit, optionData }: Props) => {
+  const [label, setLabel] = useState<string>(optionData.label);
+  const [value, setValue] = useState<string>(optionData.value);
+  const [sel, setSel] = useState<boolean>(optionData.selected);
+
   return (
       <Stack spacing={4}>
         <TextInput
@@ -24,17 +28,21 @@ const OptionForm = ({ firstFieldRef, onCancel, handleSubmit, optionData }: Props
           id="label"
           ref={firstFieldRef}
           placeholder="Option Label"
-          defaultValue={optionData.label}
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
           required
         />
         <TextInput 
           label="Value" 
           id="value" 
           placeholder="Option Value" 
-          defaultValue={optionData.value}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
           required />
         <FormControl>
-          <Checkbox checked={optionData.selected}>
+          <Checkbox 
+             onChange={(e) => setSel(e.target.checked)}
+             checked={sel}>
             Selected
           </Checkbox>
         </FormControl>
@@ -42,7 +50,12 @@ const OptionForm = ({ firstFieldRef, onCancel, handleSubmit, optionData }: Props
           <Button variant="outline" onClick={onCancel}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} colorScheme="teal">
+          <Button onClick={() => handleSubmit({
+            id: optionData.id,
+            label,
+            value,
+            selected: sel
+          })} colorScheme="teal">
             Submit
           </Button>
         </ButtonGroup>

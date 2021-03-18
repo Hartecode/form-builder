@@ -159,8 +159,9 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
     setOptionsVal(updatedOpt);
   }
 
-  const updateOption = (e) => {
-    console.log(e)
+  const updateOption = (e: Option) => {
+    const updatedOpt = curNode.updateOption(e);
+    setOptionsVal(updatedOpt);
   }
 
   return (<>

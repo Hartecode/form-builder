@@ -114,4 +114,14 @@ export class FieldNode {
     return this.options;
   }
 
+  updateOption(opt: Option) {
+    this.options = this.options.map(v => {
+      if (v.id === opt.id) {
+        return opt;
+      }
+      return v;
+    })
+    return this.options;
+  }
+
 }
