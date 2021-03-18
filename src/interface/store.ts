@@ -1,6 +1,6 @@
 export interface Option {
   value: string;
-  content: string;
+  label: string;
   selected: boolean;
 }
 
