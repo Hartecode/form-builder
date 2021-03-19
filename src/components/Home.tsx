@@ -36,29 +36,14 @@ const Home = (props: Props) => {
     }
   }, [props, titleVal, descVal])
 
-  useEffect(() => {
-    if (props.curNode && titleVal !== null ) {
-      props.curNode.titleVal = titleVal
-      console.log('title:', titleVal, props.curNode )
-    }
-  }, [titleVal, props.curNode])
+  const onUpdateTitle = (val: string) => {
+    props.curNode.titleVal = val
+    setTitleVal(props.curNode.titleVal)
+  }
 
-  useEffect(() => {
-    if (props.curNode && descVal !== null ) {
-      props.curNode.descriptionVal = descVal
-      console.log('desc:', descVal, props.curNode )
-    }
-  }, [descVal, props.curNode])
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const target = e.target;
-    if(target.name === 'title') {
-      setTitleVal(target.value)
-    }
-
-    if (target.name === 'description') {
-      setDescVal(target.value)
-    }
+  const onUpdateDesc = (val: string) => {
+    props.curNode.descriptionVal = val
+    setDescVal(props.curNode.descriptionVal)
   }
 
   const onDelete = (id: string) => {
@@ -98,7 +83,7 @@ const Home = (props: Props) => {
             <FormLabel htmlFor="title">Title</FormLabel>
             <Input name="title" 
                 value={titleVal || ''}
-                onChange={handleChange}
+                onChange={(e) => onUpdateTitle(e.target.value)}
                 placeholder="Form Title"
             />
         </FormControl>
@@ -107,7 +92,7 @@ const Home = (props: Props) => {
             <Textarea name="description"
                 value={descVal || ''}
                 placeholder="Details about the form"
-                onChange={handleChange}
+                onChange={(e) => onUpdateDesc(e.target.value)}
             />
         </FormControl>
         <DynamicList 

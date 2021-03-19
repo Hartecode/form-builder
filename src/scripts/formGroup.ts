@@ -1,4 +1,4 @@
-import { Group } from '../interface/store'
+import { Group, GroupData } from '../interface/store'
 import { 
   Root, 
   GroupNodeObj,
@@ -6,7 +6,7 @@ import {
   createField,
   convertToNodeObj, createGroup, FieldNodeObj, removeNode } from './store'
 import { FieldNode } from './fieldNode'
-import { uuID } from './helpers'
+import { uuID, getGroupDataObj, getFieldDataObj } from './helpers'
 
 export class FormGroup {
   private _id: string;
@@ -60,6 +60,19 @@ export class FormGroup {
 
   get groupType(): 'group' | 'subGroup' {
     return this._groupType; 
+  }
+
+  getGroupData(): GroupData {
+    return {
+      id: this.id,
+      label: this.label,
+      fields: this.fields,
+      fieldsData: getFieldDataObj(this.fieldsData),
+      subGroups: this.subGroups,
+      subGroupsData: getGroupDataObj(this.subGroupsData),
+      subFields: this.gSubFields,
+      subFieldsData: getFieldDataObj(this.subFieldsData)
+    }
   }
 
   getSubGroupData(id: string) {

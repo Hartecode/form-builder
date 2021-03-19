@@ -1,4 +1,4 @@
-import { GroupDataObj, GroupData, Group, Field, FieldDataObj } from '../interface/store'
+import { Store, GroupDataObj, GroupData, Group, Field, FieldDataObj } from '../interface/store'
 import { FormGroup } from './formGroup'
 import { FieldNode } from './fieldNode'
 
@@ -120,6 +120,19 @@ export class Root {
 
   set descriptionVal(str: string) {
     this.description = str;
+  }
+
+  getStoreData(): Store {
+    return {
+      title: this.title,
+      description: this.description,
+      group: this.group,
+      groupData: Object.keys(this.groupData)
+        .reduce((acc, cur) => {
+          acc[cur] = this.groupData[cur].getGroupData()
+          return acc
+        }, {})
+    }
   }
 
   getGroupData(id: string) {

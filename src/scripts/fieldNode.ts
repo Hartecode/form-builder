@@ -1,7 +1,7 @@
 import { Group, Option, FieldType } from '../interface/store'
 import { FormFieldInput, Root, createField, createGroup, GroupNodeObj, convertToNodeObj, FieldNodeObj, removeNode } from './store'
 import { FormGroup } from './formGroup'
-import { uuID } from './helpers'
+import { uuID, getGroupDataObj, getFieldDataObj } from './helpers'
 
 export class FieldNode {
   title: string;
@@ -71,6 +71,25 @@ export class FieldNode {
 
   get fieldType() : 'field' | 'subField' {
     return this._fieldType;
+  }
+
+  getFieldData(): FieldDataObj {
+    return {
+      id: this._id,
+      title: this.title,
+      type: this.type,
+      required: this.required,
+      placeholder: this.placeholder,
+      checked: this.checked,
+      pattern: this.pattern,
+      minLength: this.minLength,
+      maxLength: this.maxLength,
+      options: this.options,
+      subGroups: this._subGroups,
+      subGroupsData: getGroupDataObj(this._subGroupsData),
+      subFields: this._subFields,
+      subFieldsData: getFieldDataObj(this._subFieldsData)
+    }
   }
 
   getSubGroupData(id: string) {
