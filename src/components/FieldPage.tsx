@@ -75,21 +75,46 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
     }
   }, [curNode, labelVal, rootNode])
 
-  useEffect(() => {
-    if (curNode && labelVal !== null ) {
-      curNode.title = labelVal
-    }
-  }, [labelVal, curNode])
+  const onSetLabelVal = (val: string) => {
+    curNode.title = val;
+    setLabelVal(curNode.title);
+  }
 
   const onSetFieldType = (val: FieldType) => {
     curNode.type = val;
     setTypeVal(curNode.type);
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLabelVal(e.target.value)
+  const onSetRequiredVal = (val: boolean) => {
+    curNode.required = val;
+    setRequiredVal(curNode.required);
   }
 
+  const onSetPlaceholderVal = (val: string) => {
+    curNode.placeholder = val;
+    setPlaceholderVal(curNode.placeholder);
+  }
+
+  const onSetCheckVal = (val: boolean) => {
+    curNode.checked = val;
+    setCheckVal(curNode.checked)
+  }
+
+  const onSetPatternVal = (val: string) => {
+    curNode.pattern = val;
+    setPatternVal(curNode.pattern);
+  }
+
+  const onSetMinLengthVal = (val: string) => {
+    curNode.minLength = val;
+    setMinLengthVal(curNode.minLength);
+  }
+
+  const onSetMaxLengthVal = (val: string) => {
+    curNode.maxLength = val;
+    setMaxLengthVal(curNode.maxLength)
+  }
+      
   const onDelete = (id: string, type: 'subG' | 'subF') => {
     console.log('on del')
     switch (type) {
@@ -180,7 +205,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
               <FormLabel htmlFor="title">Title</FormLabel>
               <Input name="title" 
                   value={labelVal || ''}
-                  onChange={handleChange}
+                  onChange={e => onSetLabelVal(e.target.value)}
                   placeholder="Form Title"
               />
           </FormControl>
@@ -201,7 +226,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
           <FormControl>
             <Checkbox
               checked={requiredVal}
-              onChange={(e) => setRequiredVal(e.target.checked)}>
+              onChange={(e) => onSetRequiredVal(e.target.checked)}>
               Required Field
             </Checkbox>
           </FormControl>
@@ -209,13 +234,13 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
               <FormLabel htmlFor="placeholder">Placeholder Text</FormLabel>
               <Input name="placeholder" 
                   value={placeholderVal || ''}
-                  onChange={(e) => setPlaceholderVal(e.target.value)}
+                  onChange={(e) => onSetPlaceholderVal(e.target.value)}
                   placeholder="Enter Placeholder"
               />
           </FormControl>}
           {(typeVal === 'checkbox') && <Checkbox
               checked={checkedVal}
-              onChange={(e) => setCheckVal(e.target.checked)}>
+              onChange={(e) => onSetCheckVal(e.target.checked)}>
               Checked
             </Checkbox>
           }
@@ -223,7 +248,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
               <FormLabel htmlFor="pattern">Pattern</FormLabel>
               <Input name="pattern" 
                   value={patternVal || ''}
-                  onChange={(e) => setPlaceholderVal(e.target.value)}
+                  onChange={(e) => onSetPatternVal(e.target.value)}
                   placeholder="Pattern which will be matched with value"
               />
           </FormControl>}
@@ -232,7 +257,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
                   <FormLabel htmlFor="minLength">Value Min Length</FormLabel>
                   <NumberInput defaultValue={15}
                     name="minLength"
-                    onChange={(val) => setMinLengthVal(val)}
+                    onChange={(val) => onSetMinLengthVal(val)}
                     value={minLengthVal}>
                     <NumberInputField />
                     <NumberInputStepper>
@@ -245,7 +270,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
                   <FormLabel htmlFor="maxLength">Value Max Length</FormLabel>
                   <NumberInput defaultValue={30}
                     name="maxLength"
-                    onChange={(val) => setMaxLengthVal(val)}
+                    onChange={(val) => onSetMaxLengthVal(val)}
                     value={maxLengthVal}>
                     <NumberInputField />
                     <NumberInputStepper>
