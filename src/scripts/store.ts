@@ -7,11 +7,13 @@ interface Constructable<T> {
 }
 
 export interface FormGroupInput extends Partial<GroupData> {
-  parent: Root | FormGroup | FieldNode | null
+  parent: Root | FormGroup | FieldNode | null;
+  groupType: 'group' | 'subGroup';
 }
 
 export interface FormFieldInput extends Partial<Field> {
-  parent: Root | FormGroup | FieldNode | null
+  parent: FormGroup | FieldNode | null;
+  fieldType: 'field' | 'subField';
 }
 
 export interface GroupNodeObj {
@@ -49,8 +51,11 @@ export function removeNode(
     return [filteredGroup, cleanData];
 }
 
-export function createGroup( parent: Root | FormGroup | FieldNode, obj?: GroupData ) {
-    const node = new FormGroup({...obj, parent})
+export function createGroup(
+  parent: Root | FormGroup | FieldNode,
+  groupType: 'group' | 'subGroup',
+  obj?: GroupData) {
+    const node = new FormGroup({...obj, parent, groupType})
     
     const group: Group = {
       key: node.id,
@@ -60,8 +65,11 @@ export function createGroup( parent: Root | FormGroup | FieldNode, obj?: GroupDa
     return [group, node];
 }
 
-export function createField( parent: Root | FormGroup | FieldNode, obj?: Field ) {
-  const node = new FieldNode({...obj, parent})
+export function createField(
+  parent: FormGroup | FieldNode,
+  fieldType: 'field' | 'subField',
+  obj?: Field) {
+  const node = new FieldNode({...obj, parent, fieldType }) 
   
   const group: Group = {
     key: node.id,
@@ -119,7 +127,7 @@ export class Root {
   }
 
   createNewGroup() {
-    const [ indObj, groupNode ] = createGroup(this);
+    const [ indObj, groupNode ] = createGroup(this, 'group');
     this.group = [...this.group, indObj as Group];
     this.groupData[(groupNode as FormGroup).id] = groupNode as FormGroup;
     return [this.group, this.groupData];
@@ -132,6 +140,13 @@ export class Root {
     return [this.group, this.groupData];
   }
 
+  updateGroupItem(item: Group) {
+    this.group = this.group.map(obj => {
+      return obj.key === item.key ? item : obj
+    })
+    return this.group;
+  }
+
   updateGroupOrder(list: Group[]) {
     this.group = list;
     list.forEach(item => {
@@ -139,7 +154,8 @@ export class Root {
         this.groupData[item.key] = new FormGroup({ 
           id: item.key,
           label:  `Group ${item.key}`,
-          parent: this })
+          parent: this,
+          groupType: 'group' })
       }
     })
     return [this.group, this.groupData];

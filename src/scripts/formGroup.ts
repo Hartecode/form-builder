@@ -11,6 +11,7 @@ import { uuID } from './helpers'
 export class FormGroup {
   private _id: string;
   label: string;
+  private _groupType: 'group' | 'subGroup'; 
   private fields: Group[];
   private fieldsData: FieldNodeObj;
   private subGroups: Group[];
@@ -30,6 +31,7 @@ export class FormGroup {
     this.subFields = input.subFields || [];
     this.subFieldsData = convertToNodeObj(input.subFieldsData, FieldNode, this) as FieldNodeObj;
     this._parent = input.parent || null;
+    this._groupType = input.groupType;
   }
 
   get id(): string {
@@ -56,6 +58,10 @@ export class FormGroup {
     return this._position;
   }
 
+  get groupType(): 'group' | 'subGroup' {
+    return this._groupType; 
+  }
+
   getSubGroupData(id: string) {
     return this.subGroupsData[id] || null;
   }
@@ -69,7 +75,7 @@ export class FormGroup {
   }
 
   createNewSubGroup() {
-    const [ indObj, groupNode ] = createGroup(this);
+    const [ indObj, groupNode ] = createGroup(this, 'subGroup');
     this.subGroups = [...this.subGroups, indObj as Group];
     this.subGroupsData[(groupNode as FormGroup).id] = groupNode as FormGroup;
     return [this.subGroups, this.subGroupsData];
@@ -83,7 +89,7 @@ export class FormGroup {
   }
 
   creatNewField() {
-    const [ indObj, fieldNode ] = createField(this);
+    const [ indObj, fieldNode ] = createField(this, 'field');
     this.fields = [...this.fields, indObj as Group];
     this.fieldsData[(fieldNode as FieldNode).id] = fieldNode as FieldNode;
     return [this.fields, this.fieldsData];
@@ -97,7 +103,7 @@ export class FormGroup {
   }
 
   creatNewSubField() {
-    const [ indObj, fieldNode ] = createField(this);
+    const [ indObj, fieldNode ] = createField(this, 'subField');
     this.subFields = [ ...this.subFields, indObj as Group];
     this.subFieldsData[(fieldNode as FieldNode).id] = fieldNode as FieldNode;
     return [this.subFields, this.subFieldsData]
@@ -117,7 +123,8 @@ export class FormGroup {
         this.subGroupsData[item.key] = new FormGroup({ 
           id: item.key,
           label:  `Group ${item.key}`,
-          parent: this })
+          parent: this,
+          groupType: 'subGroup'})
       }
     })
     return [this.subGroups, this.subGroupsData];
@@ -130,7 +137,8 @@ export class FormGroup {
         this.subFieldsData[item.key] = new FieldNode({ 
           id: item.key,
           title:  `Field ${item.key}`,
-          parent: this })
+          parent: this,
+          fieldType: 'subField' })
       }
     })
     return [this.subFields, this.subFieldsData];
@@ -143,10 +151,32 @@ export class FormGroup {
         this.fieldsData[item.key] = new FieldNode({ 
           id: item.key,
           title:  `Field ${item.key}`,
-          parent: this })
+          parent: this,
+          fieldType: 'field' })
       }
     })
     return [this.fields, this.fieldsData];
+  }
+
+  updateSubGroupItem(item: Group) {
+    this.subGroups = this.subGroups.map(obj => {
+      return obj.key === item.key ? item : obj
+    })
+    return this.subGroups;
+  }
+
+  updateFieldItem(item: Group) {
+    this.fields = this.fields.map(obj => {
+      return obj.key === item.key ? item : obj
+    })
+    return this.fields;
+  }
+
+  updateSubFieldItem(item: Group) {
+    this.subFields = this.subFields.map(obj => {
+      return obj.key === item.key ? item : obj
+    })
+    return this.subFields;
   }
 
 }

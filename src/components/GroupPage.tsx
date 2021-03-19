@@ -50,15 +50,19 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
     }
   }, [curNode, labelVal, rootNode])
 
-  useEffect(() => {
-    if (curNode && labelVal !== null ) {
-      curNode.label = labelVal
-      console.log('Label:', labelVal, curNode )
+  const onUpdateLabel = (val: string) => {
+    curNode.label = val;
+    setLabelVal(curNode.label);
+  
+    const gItem = {
+      key: curNode.id,
+      label: curNode.label
     }
-  }, [labelVal, curNode])
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLabelVal(e.target.value)
+    if (curNode.groupType === 'group') {
+      (curNode.parent as Root).updateGroupItem(gItem)
+    } else if (curNode.groupType === 'subGroup') {
+      (curNode.parent as FormGroup | FieldNode).updateSubGroupItem(gItem)
+    }
   }
 
   const onDelete = (id: string, type: ListType) => {
@@ -148,7 +152,7 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
             <FormLabel htmlFor="title">Title</FormLabel>
             <Input name="Label" 
                 value={labelVal || ''}
-                onChange={handleChange}
+                onChange={(e) => onUpdateLabel(e.target.value)}
                 placeholder="Form Title"
             />
         </FormControl>

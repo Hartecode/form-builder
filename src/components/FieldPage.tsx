@@ -78,6 +78,16 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
   const onSetLabelVal = (val: string) => {
     curNode.title = val;
     setLabelVal(curNode.title);
+
+    const item = {
+      key: curNode.id,
+      label: curNode.title
+    }
+    if (curNode.fieldType === 'field') {
+      (curNode.parent as FormGroup).updateFieldItem(item)
+    } else if (curNode.fieldType === 'subField') {
+      (curNode.parent as FormGroup | FieldNode).updateSubFieldItem(item)
+    }
   }
 
   const onSetFieldType = (val: FieldType) => {

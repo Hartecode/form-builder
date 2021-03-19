@@ -18,8 +18,9 @@ export class FieldNode {
   private _subGroupsData: GroupNodeObj;
   private _subFields: Group[];
   private _subFieldsData: FieldNodeObj;
-  private _parent: Root | FormGroup | FieldNode | null;
+  private _parent: FormGroup | FieldNode | null;
   private _position: 'field' =  'field';
+  private _fieldType: 'field' | 'subField';
 
   constructor(prop: FormFieldInput) {
     this._id = prop.id || uuID();
@@ -37,6 +38,7 @@ export class FieldNode {
     this._subFields = prop.subFields || [];
     this._subFieldsData = convertToNodeObj(prop.subFieldsData, FieldNode, this) as FieldNodeObj;
     this._parent = prop.parent || null;
+    this._fieldType = prop.fieldType;
   }
 
   get id() {
@@ -67,6 +69,10 @@ export class FieldNode {
     return this._position;
   }
 
+  get fieldType() : 'field' | 'subField' {
+    return this._fieldType;
+  }
+
   getSubGroupData(id: string) {
     return this._subGroupsData[id] || null;
   }
@@ -76,7 +82,7 @@ export class FieldNode {
   }
 
   createNewSubGroup() {
-    const [ indObj, groupNode ] = createGroup(this);
+    const [ indObj, groupNode ] = createGroup(this, 'subGroup');
     this._subGroups = [...this._subGroups, indObj as Group];
     this._subGroupsData[(groupNode as FormGroup).id] = groupNode as FormGroup;
     return [this._subGroups, this._subGroupsData];
@@ -90,7 +96,7 @@ export class FieldNode {
   }
 
   creatNewSubField() {
-    const [ indObj, fieldNode ] = createField(this);
+    const [ indObj, fieldNode ] = createField(this, 'subField');
     this._subFields = [...this._subFields, indObj as Group];
     this._subFieldsData[(fieldNode as FieldNode).id] = fieldNode as FieldNode;
     return [this._subFields, this._subFieldsData];
@@ -135,7 +141,8 @@ export class FieldNode {
         this._subFieldsData[item.key] = new FieldNode({ 
           id: item.key,
           title:  `Field ${item.key}`,
-          parent: this })
+          parent: this,
+          fieldType: 'subField' })
       }
     })
     return [this._subFields, this._subFieldsData];
@@ -148,10 +155,25 @@ export class FieldNode {
         this._subGroupsData[item.key] = new FormGroup({ 
           id: item.key,
           label:  `Group ${item.key}`,
-          parent: this })
+          parent: this,
+          groupType: 'subGroup' })
       }
     })
     return [this.subGroups, this._subGroupsData];
+  }
+
+  updateSubGroupItem(item: Group) {
+    this._subGroups = this.subGroups.map(obj => {
+      return obj.key === item.key ? item : obj
+    })
+    return this._subGroups;
+  }
+
+  updateSubFieldItem(item: Group) {
+    this._subFields = this._subFields.map(obj => {
+      return obj.key === item.key ? item : obj
+    })
+    return this._subFields;
   }
 
 }
