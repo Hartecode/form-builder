@@ -3,7 +3,7 @@ import { Root } from '../scripts/store'
 import Home from './Home'
 import GroupPage from './GroupPage'
 import { FormGroup } from '../scripts/formGroup'
-import { Box, Link } from "@chakra-ui/react"
+import { Box, Link, Button } from "@chakra-ui/react"
 import { ChevronLeftIcon } from "@chakra-ui/icons"
 import { FieldNode } from '../scripts/fieldNode';
 import { AnimatePresence, motion, MotionStyle } from "framer-motion"
@@ -41,7 +41,7 @@ export interface Props {
 
 const StoreWrapper = (props) => {
   const [page, setPage] = useState('root')
-  const [rootNode, setRootNode] = useState(null)
+  const [rootNode, setRootNode] = useState<Root>(null)
   const [curNode, setCurNode] = useState<Root | FormGroup | FieldNode>(null)
 
   useEffect(() => {
@@ -62,13 +62,18 @@ const StoreWrapper = (props) => {
     nextNode(prevNode.parent)
   }
 
+  const getFullStore = () => {
+    console.log(rootNode.getStoreData());
+  }
+
   return (
   <>
-    <Box as="header">
+    <Box as="header" d="flex" justifyContent="space-between">
       {(page !== 'root') && (
         <Link onClick={prevPage}>
           <ChevronLeftIcon mx="2px" />
         </Link>)}
+        <Button onClick={getFullStore}>PRINT DATA</Button>
     </Box>
     {console.log({rootNode, curNode, page})}
     { curNode ? (

@@ -1,5 +1,5 @@
-import { Group, Option, FieldType } from '../interface/store'
-import { FormFieldInput, Root, createField, createGroup, GroupNodeObj, convertToNodeObj, FieldNodeObj, removeNode } from './store'
+import { Group, Option, FieldType, Field } from '../interface/store'
+import { FormFieldInput, createField, createGroup, GroupNodeObj, convertToNodeObj, FieldNodeObj, removeNode } from './store'
 import { FormGroup } from './formGroup'
 import { uuID, getGroupDataObj, getFieldDataObj } from './helpers'
 
@@ -73,7 +73,7 @@ export class FieldNode {
     return this._fieldType;
   }
 
-  getFieldData(): FieldDataObj {
+  getFieldData(): Field {
     return {
       id: this._id,
       title: this.title,
