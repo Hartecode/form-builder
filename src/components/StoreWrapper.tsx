@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Root } from '../scripts/store'
 import Home from './Home'
 import GroupPage from './GroupPage'
@@ -52,7 +52,6 @@ const StoreWrapper = (props) => {
 
   useEffect(() => {
     const defaultData = window.frameElement?.getAttribute('data-form-Data');
-    console.log(window, window.parent.document.getElementById(window.name))
     if (!rootNode) {
       let node: Root; 
       
@@ -67,6 +66,19 @@ const StoreWrapper = (props) => {
     }
   }, [rootNode])
 
+  const onMessageReceivedFromIframe = useCallback(
+    event => {
+      console.log("onMessageReceivedFromIframe", rootNode, event);
+    },
+    [rootNode]
+  );
+
+  useEffect(() => {
+    window.addEventListener("message", onMessageReceivedFromIframe);
+    return () =>
+      window.removeEventListener("message", onMessageReceivedFromIframe);
+  }, [onMessageReceivedFromIframe]);
+
   const nextNode = (node: Root | FormGroup | FieldNode) => {
     setCurNode(node)
     setPage(node.position)
@@ -78,8 +90,9 @@ const StoreWrapper = (props) => {
   }
 
   const getFullStore = () => {
-    console.log(window)
-    console.log(JSON.stringify(rootNode.getStoreData()));
+    const obj = rootNode.getStoreData()
+    console.log(JSON.stringify(obj));
+    window.parent.postMessage(obj, '*')
   }
 
   return (
