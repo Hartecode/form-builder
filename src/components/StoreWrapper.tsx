@@ -51,8 +51,17 @@ const StoreWrapper = (props) => {
   const [curNode, setCurNode] = useState<Root | FormGroup | FieldNode>(null)
 
   useEffect(() => {
-    const node = new Root()
+    const defaultData = window.frameElement?.getAttribute('form-data');
+    
     if (!rootNode) {
+      let node: Root; 
+      
+      if (defaultData) {
+        node = new Root(JSON.parse(defaultData)) 
+      } else {
+        node = new Root()
+      } 
+
       setRootNode(node)
       setCurNode(node)
     }
@@ -69,7 +78,7 @@ const StoreWrapper = (props) => {
   }
 
   const getFullStore = () => {
-    console.log(rootNode.getStoreData());
+    console.log(JSON.stringify(rootNode.getStoreData()));
   }
 
   return (
@@ -86,7 +95,7 @@ const StoreWrapper = (props) => {
     </Box>
     <Box position="relative">
       { curNode ? (
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {(page === 'root') && (<motion.div key={curNode.id}
               style={pageStyle}
               initial="enter"

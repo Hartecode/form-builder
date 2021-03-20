@@ -65,7 +65,6 @@ const Home = (props: Props) => {
   }
 
   const onGoToGroup = (id: string) => {
-    console.log('got  to ', id)
     const node: FormGroup = props.curNode.getGroupData(id)
     props.nextNode(node);
   }
