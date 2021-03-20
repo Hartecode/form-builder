@@ -52,7 +52,7 @@ const StoreWrapper = (props) => {
 
   useEffect(() => {
     const defaultData = window.frameElement?.getAttribute('data-form-Data');
-    console.log(window)
+    console.log(window, window.parent.document.getElementById(window.name))
     if (!rootNode) {
       let node: Root; 
       
