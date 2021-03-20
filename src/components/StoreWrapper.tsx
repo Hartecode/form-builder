@@ -51,8 +51,8 @@ const StoreWrapper = (props) => {
   const [curNode, setCurNode] = useState<Root | FormGroup | FieldNode>(null)
 
   useEffect(() => {
-    const defaultData = window.frameElement?.getAttribute('formData');
-    console.log(window.frameElement)
+    const defaultData = window.frameElement?.getAttribute('data-form-Data');
+    console.log(window)
     if (!rootNode) {
       let node: Root; 
       
