@@ -42,7 +42,6 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
   useEffect(() => {
     if (curNode 
         && labelVal === null ) {
-      console.log('once',{ rootNode, curNode })
       setLabelVal(curNode.label)
       setFieldList(curNode.gFields)
       setSubGroup(curNode.gSubGroups)
@@ -66,7 +65,6 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
   }
 
   const onDelete = (id: string, type: ListType) => {
-    console.log('on del')
     switch (type) {
       case 'field':
         const [fields] = curNode.removeField(id)
@@ -84,7 +82,6 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
   }
 
   const onAdd = (type: ListType, id?: string) => {
-    console.log('run add')
     switch (type) {
       case 'field':
         const [fields] = curNode.creatNewField()
@@ -126,18 +123,15 @@ const GroupPage = ({ rootNode, curNode, nextNode }: Props) => {
 
   const onGoToSubGroup = (id: string) => {
     const node: FormGroup = curNode.getSubGroupData(id)
-    console.log(node)
     nextNode(node);
   }
 
   const onGoToField = (id: string) => {
-    console.log('got  to ', id)
     const node: FieldNode = curNode.getFieldData(id)
     nextNode(node);
   }
 
   const onGoToSubField = (id: string) => {
-    console.log('got  to ', id)
     const node: FieldNode = curNode.getSubFieldData(id)
     nextNode(node);
   }

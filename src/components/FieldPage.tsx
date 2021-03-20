@@ -60,7 +60,6 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
   useEffect(() => {
     if (curNode 
         && labelVal === null ) {
-      console.log('once',{ rootNode, curNode })
       setLabelVal(curNode.title)
       setTypeVal(curNode.type)
       setRequiredVal(curNode.required)
@@ -126,7 +125,6 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
   }
       
   const onDelete = (id: string, type: 'subG' | 'subF') => {
-    console.log('on del')
     switch (type) {
       case 'subG':
         const [group] = curNode.removeSubGroup(id)
@@ -140,7 +138,6 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
   }
 
   const onAdd = (type: 'subG' | 'subF', id?: string) => {
-    console.log('run add')
     switch (type) {
       case 'subG':
         const [group] = curNode.createNewSubGroup()
@@ -180,12 +177,10 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
 
   const onGoToSubGroup = (id: string) => {
     const node: FormGroup = curNode.getSubGroupData(id)
-    console.log(node)
     nextNode(node);
   }
 
   const onGoToSubField = (id: string) => {
-    console.log('got  to ', id)
     const node: FieldNode = curNode.getSubFieldData(id)
     nextNode(node);
   }

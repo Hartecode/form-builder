@@ -29,7 +29,6 @@ const Home = (props: Props) => {
     if (props.curNode 
         && titleVal === null 
         && descVal === null) {
-      console.log('once',{ props })
       setTitleVal(props.curNode.titleVal)
       setDescVal(props.curNode.descriptionVal)
       setGroupList(props.curNode.groupList)
@@ -47,7 +46,6 @@ const Home = (props: Props) => {
   }
 
   const onDelete = (id: string) => {
-    console.log('on del')
     const [ group ] = props.curNode.removeGroup(id);
     setGroupList(group as Group[])
   }
@@ -63,7 +61,6 @@ const Home = (props: Props) => {
     const [reorderedItem] = items.splice(result.source.index, 1)
     items.splice(result.destination.index, 0, reorderedItem)
     const [newGroup] = props.curNode.updateGroupOrder(items)
-    console.log(props.curNode)
     setGroupList(newGroup as Group[])
   }
 
