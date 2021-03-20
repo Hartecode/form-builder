@@ -78,6 +78,7 @@ const StoreWrapper = (props) => {
   }
 
   const getFullStore = () => {
+    console.log(window)
     console.log(JSON.stringify(rootNode.getStoreData()));
   }
 
