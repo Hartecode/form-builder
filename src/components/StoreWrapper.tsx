@@ -12,32 +12,29 @@ import FieldPage from './FieldPage'
 const variants = {
   enter: {
     x:  1000,
-    opacity: 1
-  },
-  initial: {
-    opacity: 0,
+    zIndex: 0,
   },
   center: {
     zIndex: 1,
     x: 0,
-    opacity: 1
   },
   exit: {
     x: -1000,
-    opacity: 1
   }
 };
 
 const pageTransition = {
-  x: {  stiffness: 300, damping: 30 },
-  opacity: { duration: 0.2 }
+  x: { 
+    type: "spring",
+    stiffness: 300,
+    damping: 30,
+    duration: 0.2 },
 }
 
 const pageStyle: MotionStyle = {
-  position: "absolute",
-  width: "100%"
-};
-
+  gridRow: 1,
+  gridColumn: 1
+}
 
 export interface Props {
   rootNode: Root;
@@ -107,11 +104,14 @@ const StoreWrapper = (props) => {
         <Spacer transition="flex 0.2s" flex={page !== 'root' ? '1' : '0'} />
         <Button onClick={getFullStore}>PRINT DATA</Button>
     </Box>
-    <Box position="relative">
+    <Box d="grid" position="relative" >
       { curNode ? (
         <AnimatePresence initial={false}>
           {(page === 'root') && (<motion.div key={curNode.id}
-              style={pageStyle}
+              style={{
+                ...pageStyle,
+  
+              }}
               initial="enter"
               animate="center"
               exit="exit"
@@ -120,7 +120,9 @@ const StoreWrapper = (props) => {
               <Home rootNode={rootNode} curNode={curNode as Root} nextNode={nextNode} />
             </motion.div>)}
           {(page === 'group') && <motion.div key={curNode.id}
-              style={pageStyle}
+              style={{ ...pageStyle,
+ 
+              }}
               variants={variants}
               initial="enter"
               animate="center"
@@ -130,7 +132,10 @@ const StoreWrapper = (props) => {
                   rootNode={rootNode} curNode={curNode as FormGroup} nextNode={nextNode} />
             </motion.div>}
             {(page === 'field') && <motion.div key={curNode.id}
-                style={pageStyle}
+                style={{
+                  ...pageStyle,
+              
+                }}
                 variants={variants}
                 initial="enter"
                 animate="center"
@@ -142,7 +147,8 @@ const StoreWrapper = (props) => {
         : <h1>Loading...</h1>
       }
     </Box>
-    
+    <footer>
+    </footer>
     
   </>)
 }
