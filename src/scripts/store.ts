@@ -1,6 +1,7 @@
 import { Store, GroupDataObj, GroupData, Group, Field, FieldDataObj } from '../interface/store'
 import { FormGroup } from './formGroup'
 import { FieldNode } from './fieldNode'
+import { uuID } from './helpers';
 
 interface Constructable<T> {
   new(...args: any) : T;
@@ -92,6 +93,7 @@ export class Root {
     description = '',
     group = [],
     groupData = {}}: Store) {
+    this.id = uuID();
     this.title = title;
     this.description = description;
     this.group = group;
