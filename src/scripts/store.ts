@@ -176,5 +176,18 @@ export class Root {
     return [this.group, this.groupData];
   }
 
+  updateRoot(
+    { title = '', 
+    description = '',
+    group = [],
+    groupData = {}}: Store) {
+    this.id = uuID();
+    this.title = title;
+    this.description = description;
+    this.group = group;
+    this.groupData = convertToNodeObj(groupData, FormGroup, this) as GroupNodeObj;
+    return this;
+  }
+
 }
 

@@ -72,11 +72,13 @@ const StoreWrapper = (props) => {
         if (event && typeof formData === 'object' 
           && formData !== null) {
           console.log('run on mess')
-          initSetUp(formData)
+          // initSetUp(formData)
+          rootNode.updateRoot(formData)
+          setCurNode(rootNode);
         }
       }
     },
-    []
+    [rootNode]
   );
 
   useEffect(() => {
