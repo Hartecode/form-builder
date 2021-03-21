@@ -47,8 +47,9 @@ const StoreWrapper = (props) => {
   const [page, setPage] = useState('root')
   const [rootNode, setRootNode] = useState<Root>(null)
   const [curNode, setCurNode] = useState<Root | FormGroup | FieldNode>(null)
+  const [event, setEvent] = useState<boolean>(false)
 
-  const initSetUp = (data?: Store) => {
+  const initSetUp = (data: Store = {} as Store) => {
     const node = new Root(data)
     setRootNode(node)
     setCurNode(node)
@@ -62,10 +63,12 @@ const StoreWrapper = (props) => {
 
   const onMessageReceivedFromIframe = useCallback(
     event => {
-      console.log("onMessageReceivedFromIframe", rootNode, event);
+      console.log("onMessageReceivedFromIframe", rootNode);
       const formData: Store = event?.data?.formData;
-      if (typeof formData === 'object' 
+      console.log({ event, formData })
+      if (event && typeof formData === 'object' 
         && formData !== null) {
+        console.log('run on mess')
         initSetUp(formData)
       }
     },
@@ -73,10 +76,14 @@ const StoreWrapper = (props) => {
   );
 
   useEffect(() => {
-    window.addEventListener("message", onMessageReceivedFromIframe);
+    if (!event) {
+      console.log('set up')
+      window.addEventListener("message", onMessageReceivedFromIframe);
+      setEvent(true)
+    }
     return () =>
       window.removeEventListener("message", onMessageReceivedFromIframe);
-  }, [onMessageReceivedFromIframe]);
+  }, [onMessageReceivedFromIframe, event]);
 
   const nextNode = (node: Root | FormGroup | FieldNode) => {
     setCurNode(node)
