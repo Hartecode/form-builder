@@ -65,14 +65,14 @@ const StoreWrapper = (props) => {
   const onMessageReceivedFromIframe = useCallback(
     event => {
       console.log("onMessageReceivedFromIframe");
-      const formData = event.data.formData;
+      const formData: Store = event.data.formData;
       console.log({ data: event.data, formData })
       if (event.data?.source  !== "react-devtools-bridge" || 
         event.data?.source  !== 'react-devtools-content-script') {
         if (event && typeof formData === 'object' 
           && formData !== null) {
           console.log('run on mess')
-          initSetUp(formData.formData as Store)
+          initSetUp(formData)
         }
       }
     },
