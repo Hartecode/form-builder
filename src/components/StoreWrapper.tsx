@@ -8,6 +8,7 @@ import { ChevronLeftIcon } from "@chakra-ui/icons"
 import { FieldNode } from '../scripts/fieldNode';
 import { AnimatePresence, motion, MotionStyle } from "framer-motion"
 import FieldPage from './FieldPage'
+import { Store } from '../interface/store';
 
 const variants = {
   enter: {
@@ -47,25 +48,26 @@ const StoreWrapper = (props) => {
   const [rootNode, setRootNode] = useState<Root>(null)
   const [curNode, setCurNode] = useState<Root | FormGroup | FieldNode>(null)
 
-  useEffect(() => {
-    const defaultData = window.frameElement?.getAttribute('data-form-Data');
-    if (!rootNode) {
-      let node: Root; 
-      
-      if (defaultData) {
-        node = new Root(JSON.parse(defaultData)) 
-      } else {
-        node = new Root()
-      } 
+  const initSetUp = (data?: Store) => {
+    const node = new Root(data)
+    setRootNode(node)
+    setCurNode(node)
+  }
 
-      setRootNode(node)
-      setCurNode(node)
+  useEffect(() => {
+    if (!rootNode) {
+      initSetUp()
     }
   }, [rootNode])
 
   const onMessageReceivedFromIframe = useCallback(
     event => {
       console.log("onMessageReceivedFromIframe", rootNode, event);
+      const formData: Store = event?.data?.formData;
+      if (typeof formData === 'object' 
+        && formData !== null) {
+        initSetUp(formData)
+      }
     },
     [rootNode]
   );
@@ -87,9 +89,9 @@ const StoreWrapper = (props) => {
   }
 
   const getFullStore = () => {
-    const obj = rootNode.getStoreData()
-    console.log(JSON.stringify(obj));
-    window.parent.postMessage(obj, '*')
+    const formData = rootNode.getStoreData()
+    console.log(JSON.stringify(formData));
+    window.parent.postMessage({ formData }, '*')
   }
 
   return (

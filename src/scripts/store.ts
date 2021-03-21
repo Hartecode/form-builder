@@ -88,10 +88,10 @@ export class Root {
   private _position: 'root' = 'root';
 
   constructor(
-    title: string = '', 
-    description: string = '',
-    group: Group[] = [],
-    groupData: GroupDataObj = {}) {
+    { title = '', 
+    description = '',
+    group = [],
+    groupData = {}}: Store) {
     this.title = title;
     this.description = description;
     this.group = group;
