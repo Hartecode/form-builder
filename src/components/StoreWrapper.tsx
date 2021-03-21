@@ -73,7 +73,7 @@ const StoreWrapper = (props) => {
           && formData !== null) {
           console.log('run on mess')
           // initSetUp(formData)
-          rootNode.updateRoot(formData)
+          setRootNode(rootNode.updateRoot(formData))
           setCurNode(rootNode);
         }
       }
@@ -169,3 +169,7 @@ const StoreWrapper = (props) => {
 }
 
 export default StoreWrapper
+
+function setRoot(arg0: Root) {
+  throw new Error('Function not implemented.');
+}
