@@ -47,7 +47,6 @@ const StoreWrapper = (props) => {
   const [page, setPage] = useState('root')
   const [rootNode, setRootNode] = useState<Root>(null)
   const [curNode, setCurNode] = useState<Root | FormGroup | FieldNode>(null)
-  const [event, setEvent] = useState<boolean>(false)
 
   const initSetUp = (data: Store = {} as Store) => {
     const node = new Root(data)
@@ -63,7 +62,7 @@ const StoreWrapper = (props) => {
 
   const onMessageReceivedFromIframe = useCallback(
     event => {
-      console.log("onMessageReceivedFromIframe", rootNode);
+      console.log("onMessageReceivedFromIframe");
       const formData: Store = event?.data?.formData;
       console.log({ event, formData })
       if (event && typeof formData === 'object' 
@@ -72,18 +71,18 @@ const StoreWrapper = (props) => {
         initSetUp(formData)
       }
     },
-    [rootNode]
+    []
   );
 
   useEffect(() => {
-    if (!event) {
-      console.log('set up')
-      window.addEventListener("message", onMessageReceivedFromIframe);
-      setEvent(true)
-    }
-    return () =>
+    console.log('add')
+    window.addEventListener("message", onMessageReceivedFromIframe);
+    return () => {
       window.removeEventListener("message", onMessageReceivedFromIframe);
-  }, [onMessageReceivedFromIframe, event]);
+      console.log('removed')
+    }
+    
+  }, [onMessageReceivedFromIframe]);
 
   const nextNode = (node: Root | FormGroup | FieldNode) => {
     setCurNode(node)
