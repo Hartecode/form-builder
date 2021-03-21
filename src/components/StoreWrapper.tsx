@@ -49,6 +49,8 @@ const StoreWrapper = (props) => {
   const [curNode, setCurNode] = useState<Root | FormGroup | FieldNode>(null)
 
   const initSetUp = (data: Store = {} as Store) => {
+    setCurNode(null)
+    setRootNode(null)
     const node = new Root(data)
     setRootNode(node)
     setCurNode(node)
