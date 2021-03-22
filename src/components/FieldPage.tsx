@@ -260,7 +260,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
           {(lengthReqTypes.includes(typeVal)) && <>
                 <FormControl>
                   <FormLabel htmlFor="minLength">Value Min Length</FormLabel>
-                  <NumberInput defaultValue={15}
+                  <NumberInput
                     name="minLength"
                     onChange={(val) => onSetMinLengthVal(val)}
                     value={minLengthVal}>
@@ -273,7 +273,7 @@ const FieldPage = ({ rootNode, curNode, nextNode }: Props) => {
               </FormControl>
               <FormControl>
                   <FormLabel htmlFor="maxLength">Value Max Length</FormLabel>
-                  <NumberInput defaultValue={30}
+                  <NumberInput 
                     name="maxLength"
                     onChange={(val) => onSetMaxLengthVal(val)}
                     value={maxLengthVal}>
