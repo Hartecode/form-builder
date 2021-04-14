@@ -1,0 +1,12 @@
+{
+    "name": "Tabular Data Component Custom Editor",
+    "description": "A table editor with will allow users to upload csv and edit.",
+    "resources": {
+      "scripts": [
+        "/experience/editors/harte/formBuilderTrigger.js"],
+      "styles": [
+        "https://cdnjs.cloudflare.com/ajax/libs/design-system/2.8.3/styles/salesforce-lightning-design-system.min.css",
+        "/experience/editors/harte/formBuilderTrigger.css"
+      ]
+    }
+}

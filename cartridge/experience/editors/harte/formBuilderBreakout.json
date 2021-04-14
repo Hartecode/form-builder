@@ -1,0 +1,12 @@
+{
+    "name": "Custom Car Editor Breakout",
+    "description": "An car editor with breakout functionality",
+    "resources": {
+        "scripts": [
+            "/experience/editors/harte/formBuilderBreakout.js"
+        ],
+        "styles":[
+            "/experience/editors/harte/formBuilderBreakout.css"
+        ]
+    }
+}

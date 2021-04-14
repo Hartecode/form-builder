@@ -1,0 +1,113 @@
+:root {
+    --min-w: 200px;
+}
+
+body {
+    margin: 0;
+}
+
+thead {
+    background-color: rgb(255, 255, 255);
+    border-bottom: 1px solid rgb(219, 219, 219);
+    text-transform: uppercase;
+}
+
+thead tr {
+    display: flex;
+}
+
+thead th {
+    display: flex;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    font-stretch: normal;
+    padding: 16px 12px;
+    width: var(--min-w);
+    text-align: left;
+}
+
+tbody {
+    background-color: #e4f0f5;
+}
+
+tbody tr {
+    display: flex;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: rgb(246, 246, 246);
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgb(255, 255, 255);
+}
+
+tbody td {
+    border-left: 1px solid rgb(219, 219, 219);
+}
+
+caption {
+    padding: 10px;
+    caption-side: bottom;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid rgb(219, 219, 219);
+    letter-spacing: 1px;
+}
+
+tbody td {
+    padding: 16px 12px;
+    width: var(--min-w);
+    text-align: left;
+}
+
+td {
+    text-align: center;
+}
+
+#table {
+    overflow-x: scroll;
+    width: 100%;
+}
+
+.container {
+    position: relative;
+}
+
+.container::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 12px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0.3));
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 12px;
+    background-image: linear-gradient(to left, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0.3));
+}
+
+input[type='text'] {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+    width: 100%;
+}
+
+textarea {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    padding: 0;
+    resize: vertical;
+    width: 100%;
+}
