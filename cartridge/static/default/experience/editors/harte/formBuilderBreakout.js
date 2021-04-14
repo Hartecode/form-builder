@@ -8,7 +8,7 @@
             <div class="container">
             <iframe
             id="target"
-            name="builder" src="https://form-builder-livid.vercel.app/"
+            name="builder" src="build/index.html"
             frameborder="0" height="100%" width="100%"></iframe></div>`;
         const clone = document.importNode(template.content, true);
         document.body.appendChild(clone);
