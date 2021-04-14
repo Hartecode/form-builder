@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# FormBuilder SFCC Page Designer Custom Attribute Cartridge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A custom interface for page designer to enable users to generate data for building forms.
 
 ## Available Scripts
 
