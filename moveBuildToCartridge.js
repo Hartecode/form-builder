@@ -3,7 +3,6 @@ const fs = require('fs-extra')
 const src = 'build'
 const dest = 'cartridge/static/build'
 
-// With async/await:
 async function example (src, dest) {
   try {
     await fs.remove(dest)
